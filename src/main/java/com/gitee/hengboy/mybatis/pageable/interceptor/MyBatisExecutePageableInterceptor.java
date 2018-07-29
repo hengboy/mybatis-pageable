@@ -2,18 +2,18 @@ package com.gitee.hengboy.mybatis.pageable.interceptor;
 
 import com.gitee.hengboy.mybatis.pageable.DefaultPage;
 import com.gitee.hengboy.mybatis.pageable.common.PageableRequestHelper;
+import com.gitee.hengboy.mybatis.pageable.dialect.Dialect;
+import com.gitee.hengboy.mybatis.pageable.dialect.DialectDynamicFactory;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.ibatis.scripting.xmltags.XMLLanguageDriver;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -30,12 +30,10 @@ import java.util.*;
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class})
 })
 public class MyBatisExecutePageableInterceptor implements Interceptor {
-
     /**
-     * MyBaits内部Xml节点解析的语言驱动
+     * 数据库方言
      */
-    private static final XMLLanguageDriver languageDriver = new XMLLanguageDriver();
-    private Field additionalParametersField;
+    private String dialect;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -43,9 +41,6 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
         final Object[] args = invocation.getArgs();
         MappedStatement ms = (MappedStatement) args[0];
         Object parameter = args[1];
-
-        //System.out.println("参数：" + parameter);
-
         RowBounds rowBounds = (RowBounds) args[2];
         // 默认行绑定不执行分页
         if (PageableRequestHelper.PAGEABLE_THREAD_LOCAL.get() == null) {
@@ -108,11 +103,13 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
         pageable.setData(data);
 
 
-
         // 查询总数量
         MappedStatement countStatement = createStatement(ms);
         CacheKey countKey = executor.createCacheKey(countStatement, parameter, RowBounds.DEFAULT, boundSql);
-        BoundSql countBoundSql = new BoundSql(configuration, "select count(0) from (" + boundSql.getSql() + ") temp_", boundSql.getParameterMappings(), parameter);
+        Dialect dialect = DialectDynamicFactory.newInstance(countStatement, this.dialect);
+        String countSql = dialect.getCountSql(boundSql);
+
+        BoundSql countBoundSql = new BoundSql(configuration, countSql, boundSql.getParameterMappings(), parameter);
         System.out.println(countBoundSql.getSql());
         Object countResultList = executor.query(countStatement, parameter, RowBounds.DEFAULT, resultHandler, countKey, countBoundSql);
         long count = ((Number) ((List) countResultList).get(0)).longValue();
@@ -153,12 +150,6 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
     @Override
     public void setProperties(Properties properties) {
         System.out.println("配置信息" + properties);
-        try {
-            //反射获取 BoundSql 中的 additionalParameters 属性
-            additionalParametersField = BoundSql.class.getDeclaredField("additionalParameters");
-            additionalParametersField.setAccessible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.dialect = properties.getProperty("dialect");
     }
 }

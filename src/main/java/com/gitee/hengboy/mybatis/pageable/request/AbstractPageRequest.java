@@ -18,6 +18,16 @@ import com.gitee.hengboy.mybatis.pageable.common.exception.PageableException;
  * ================================
  */
 public abstract class AbstractPageRequest implements Pageable {
+
+    /**
+     * 分页当前页码
+     */
+    protected int pageIndex;
+    /**
+     * 分页每页条数
+     */
+    protected int pageSize;
+
     /**
      * 抽象分页请求对象构造函数
      *
@@ -46,16 +56,6 @@ public abstract class AbstractPageRequest implements Pageable {
         // 写入到threadLocal
         PageableRequestHelper.PAGEABLE_THREAD_LOCAL.set(page);
     }
-
-    /**
-     * 分页当前页码
-     */
-    protected int pageIndex;
-    /**
-     * 分页每页条数
-     */
-    protected int pageSize;
-
     /**
      * 获取当前分页页码
      *
