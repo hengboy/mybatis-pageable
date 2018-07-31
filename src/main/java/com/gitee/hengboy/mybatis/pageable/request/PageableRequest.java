@@ -48,10 +48,15 @@ public class PageableRequest extends AbstractPageRequest {
     public <T> Page<T> request(LogicFunction logicFunction) {
         // 业务方法执行
         logicFunction.invoke();
-        // 获取threadLocal分页请求对象
-        Page<T> page = (Page<T>) PageableRequestHelper.PAGEABLE_THREAD_LOCAL.get();
+
+        /*
+         * 获取threadLocal分页请求对象
+         * 注意：该行代码需要再执行完成业务方法后执行，原因是业务方法在执行时拦截器需要对threadLocal内的page对象作出修改
+         */
+        Page<T> page = (Page<T>) PageableRequestHelper.getPageLocal();
+
         // 删除threadLocal分页请求对象
-        PageableRequestHelper.PAGEABLE_THREAD_LOCAL.remove();
+        PageableRequestHelper.removePageLocal();
         return page;
     }
 

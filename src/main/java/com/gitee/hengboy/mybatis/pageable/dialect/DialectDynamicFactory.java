@@ -64,10 +64,8 @@ public class DialectDynamicFactory {
             // 如果没有传递枚举参数
             // 则自动根据数据库
             if (dialect == null) {
-                System.out.println("并没有传递方言.");
                 return newAutoInstance(statement);
             }
-            System.out.println("传递的方言："+dialect);
             // 反射获取方言实现实例
             return (Dialect) Class.forName(dialect).newInstance();
         }
@@ -92,10 +90,8 @@ public class DialectDynamicFactory {
             String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
             // 获取jdbc连接字符串前缀
             String jdbcUrlPrefix = jdbcUrl.split(JDBC_URL_SPLIT)[0];
-            System.out.println("数据库连接字符串前缀：" + jdbcUrlPrefix);
             // 获取对应的数据库枚举
             DialectEnum dialectEnum = URL_DIALECT_MAPPING.get(jdbcUrlPrefix);
-            System.out.println("数据库方言枚举：" + dialectEnum);
             return dialectEnum.getValue().newInstance();
         } catch (Exception e) {
             throw new PageableException(ErrorMsgEnum.DIALECT_NOT_FOUND);

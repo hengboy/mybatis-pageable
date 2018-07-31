@@ -54,7 +54,7 @@ public abstract class AbstractPageRequest implements Pageable {
         // 构造分页响应对象
         Page page = DefaultPage.builder().pageable(this).build();
         // 写入到threadLocal
-        PageableRequestHelper.PAGEABLE_THREAD_LOCAL.set(page);
+        PageableRequestHelper.setPageLocal(page);
     }
     /**
      * 获取当前分页页码

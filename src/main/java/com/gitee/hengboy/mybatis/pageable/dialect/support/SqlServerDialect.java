@@ -1,5 +1,6 @@
 package com.gitee.hengboy.mybatis.pageable.dialect.support;
 
+import com.gitee.hengboy.mybatis.pageable.Page;
 import com.gitee.hengboy.mybatis.pageable.dialect.AbstractDialect;
 import org.apache.ibatis.mapping.BoundSql;
 
@@ -16,7 +17,7 @@ import org.apache.ibatis.mapping.BoundSql;
  */
 public class SqlServerDialect extends AbstractDialect {
     @Override
-    public String getPageSql(BoundSql boundSql) {
+    public String getPageSql(BoundSql boundSql, Page page) {
         return null;
     }
 }
