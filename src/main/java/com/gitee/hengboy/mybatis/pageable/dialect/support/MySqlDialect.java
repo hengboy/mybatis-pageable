@@ -1,8 +1,12 @@
 package com.gitee.hengboy.mybatis.pageable.dialect.support;
 
 import com.gitee.hengboy.mybatis.pageable.Page;
+import com.gitee.hengboy.mybatis.pageable.PageParameterSortMapping;
 import com.gitee.hengboy.mybatis.pageable.dialect.AbstractDialect;
 import org.apache.ibatis.mapping.BoundSql;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MySQL数据库方言实现
@@ -21,6 +25,23 @@ public class MySqlDialect extends AbstractDialect {
      * 分页关键字
      */
     private static final String PAGE_KEYWORD = " LIMIT ";
+
+    /**
+     * 设置mysql数据库排序后的分页参数
+     * 对应com.gitee.hengboy.mybatis.pageable.dialect.support.MySqlDialect#getPageSql(org.apache.ibatis.mapping.BoundSql, com.gitee.hengboy.mybatis.pageable.Page)
+     * 获取的分页sql的占位符索引
+     *
+     * @return
+     */
+    @Override
+    public List<PageParameterSortMapping> getSortParameterMapping() {
+        return new ArrayList(){
+            {
+                add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_OFFSET).typeClass(Long.class).build());
+                add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_SIZE).typeClass(Long.class).build());
+            }
+        };
+    }
 
     /**
      * 获取MySQL数据库的分页sql

@@ -1,8 +1,11 @@
 package com.gitee.hengboy.mybatis.pageable.dialect;
 
 import com.gitee.hengboy.mybatis.pageable.Page;
+import com.gitee.hengboy.mybatis.pageable.PageParameterSortMapping;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
+
+import java.util.List;
 
 /**
  * 数据库方言接口定义
@@ -52,4 +55,12 @@ public interface Dialect {
      * @param page         分页响应对象实例
      */
     void addPageMapping(BoundSql pageBoundSql, MappedStatement statement, Page page);
+
+    /**
+     * 获取分页参数排序映射列表
+     * 用于分页参数映射
+     *
+     * @return
+     */
+    List<PageParameterSortMapping> getSortParameterMapping();
 }

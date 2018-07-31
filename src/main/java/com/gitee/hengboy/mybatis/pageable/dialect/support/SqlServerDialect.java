@@ -1,8 +1,11 @@
 package com.gitee.hengboy.mybatis.pageable.dialect.support;
 
 import com.gitee.hengboy.mybatis.pageable.Page;
+import com.gitee.hengboy.mybatis.pageable.PageParameterSortMapping;
 import com.gitee.hengboy.mybatis.pageable.dialect.AbstractDialect;
 import org.apache.ibatis.mapping.BoundSql;
+
+import java.util.List;
 
 /**
  * SqlServer数据库方言
@@ -16,6 +19,11 @@ import org.apache.ibatis.mapping.BoundSql;
  * ================================
  */
 public class SqlServerDialect extends AbstractDialect {
+    @Override
+    public List<PageParameterSortMapping> getSortParameterMapping() {
+        return null;
+    }
+
     @Override
     public String getPageSql(BoundSql boundSql, Page page) {
         return null;

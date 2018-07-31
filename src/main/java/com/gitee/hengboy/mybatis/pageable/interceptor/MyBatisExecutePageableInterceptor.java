@@ -98,7 +98,7 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
         // 执行查询时携带的参数实体或者参数Map集合
         Object parameter = args[1];
         // 行绑定信息
-        RowBounds rowBounds = (RowBounds) args[2];
+        RowBounds rowBounds = RowBounds.DEFAULT;
         // 返回结果处理对象
         ResultHandler resultHandler = (ResultHandler) args[3];
         // boundSql

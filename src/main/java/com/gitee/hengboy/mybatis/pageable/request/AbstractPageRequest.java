@@ -86,4 +86,12 @@ public abstract class AbstractPageRequest implements Pageable {
         return (long) (this.pageIndex - 1) * (long) this.pageSize;
     }
 
+    /**
+     * 获取分页结束位置
+     * @return
+     */
+    @Override
+    public long getEndRow() {
+        return this.pageIndex * this.pageSize;
+    }
 }

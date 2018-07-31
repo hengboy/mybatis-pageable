@@ -37,6 +37,12 @@ public interface Pageable {
     long getOffset();
 
     /**
+     * 当前页码结束位置
+     * @return
+     */
+    long getEndRow();
+
+    /**
      * 下一页
      *
      * @return

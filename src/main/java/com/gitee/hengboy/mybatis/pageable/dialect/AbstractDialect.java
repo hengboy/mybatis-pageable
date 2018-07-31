@@ -1,16 +1,14 @@
 package com.gitee.hengboy.mybatis.pageable.dialect;
 
 import com.gitee.hengboy.mybatis.pageable.Page;
+import com.gitee.hengboy.mybatis.pageable.PageParameterSortMapping;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据库方言抽象实现类
@@ -40,9 +38,13 @@ public abstract class AbstractDialect implements Dialect {
      */
     protected static final String SPLIT = " , ";
     /**
-     * 分页参数：当前页码参数名称
+     * 分页参数：当前页码开始位置参数名称
      */
     protected static final String PARAM_PAGE_OFFSET = "pageable_page_offset_";
+    /**
+     * 分页参数：当前页码结束位置参数名
+     */
+    protected static final String PARAM_PAGE_END = "pageable_page_end_";
     /**
      * 分页参数：每页条数参数名称
      */
@@ -85,13 +87,17 @@ public abstract class AbstractDialect implements Dialect {
             }
         }
         // 设置分页信息到参数集合
-        pageParameter.put(PARAM_PAGE_OFFSET, page.getOffset());
         pageParameter.put(PARAM_PAGE_SIZE, page.getPageSize());
+        pageParameter.put(PARAM_PAGE_OFFSET, page.getOffset());
+        pageParameter.put(PARAM_PAGE_END, page.getEndRow());
         return pageParameter;
     }
 
     /**
      * 添加分页参数映射
+     * 注意：参数的顺序直接映射参数的绑定，绑定占位符时从parameterMappings集合list内第一个依次匹配
+     * 如：sql : limit ?,?，parameterMapping：{offset = 0,limit = 5}
+     * 最后匹配为 limit offset,limit，也就是limit 0,5
      *
      * @param pageBoundSql 分页的BoundSql实例
      * @param statement    MappedStatement对象实例
@@ -106,10 +112,12 @@ public abstract class AbstractDialect implements Dialect {
                 newParameterMappings.addAll(pageBoundSql.getParameterMappings());
             }
 
-            newParameterMappings.add(new ParameterMapping.Builder(statement.getConfiguration(), PARAM_PAGE_OFFSET, Long.class).build());
-            newParameterMappings.add(new ParameterMapping.Builder(statement.getConfiguration(), PARAM_PAGE_SIZE, Integer.class).build());
-
-            // 仅仅更新dataBoundSql的参数映射
+            // 获取不同数据库的排序后的分页参数映射
+            List<PageParameterSortMapping> sortParameterMappings = getSortParameterMapping();
+            for (PageParameterSortMapping mapping : sortParameterMappings) {
+                newParameterMappings.add(new ParameterMapping.Builder(statement.getConfiguration(), mapping.getParameterName(), mapping.getTypeClass()).build());
+            }
+            // 仅仅更新pageBoundSql的参数映射
             MetaObject metaObject = SystemMetaObject.forObject(pageBoundSql);
             metaObject.setValue("parameterMappings", newParameterMappings);
         }

@@ -58,6 +58,12 @@ public interface Page<T> {
     long getOffset();
 
     /**
+     * 当前页的结束位置
+     * @return
+     */
+    long getEndRow();
+
+    /**
      * 是否存在下一页
      *
      * @return

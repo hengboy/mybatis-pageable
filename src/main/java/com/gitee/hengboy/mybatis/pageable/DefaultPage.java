@@ -112,6 +112,11 @@ public class DefaultPage<T> implements Page<T> {
         return this.pageable.getOffset();
     }
 
+    @Override
+    public long getEndRow() {
+        return this.pageable.getEndRow();
+    }
+
     /**
      * 是否存在上一页
      *
