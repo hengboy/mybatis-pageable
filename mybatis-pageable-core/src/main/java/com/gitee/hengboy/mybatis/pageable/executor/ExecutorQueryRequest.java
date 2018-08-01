@@ -1,7 +1,7 @@
 package com.gitee.hengboy.mybatis.pageable.executor;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -19,7 +19,7 @@ import org.apache.ibatis.session.RowBounds;
  * 简书：http://www.jianshu.com/u/092df3f77bca
  * ================================
  */
-@Data
+@Getter
 @Builder
 public class ExecutorQueryRequest {
     private MappedStatement statement;

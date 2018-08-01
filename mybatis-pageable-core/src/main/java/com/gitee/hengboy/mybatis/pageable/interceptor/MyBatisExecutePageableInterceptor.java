@@ -76,7 +76,6 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
 
         // 执行分页查询 & 设置到分页响应对象
         pageable.setData(executeQuery(executor, queryRequest, pageable, dialect));
-
         // 查询总数量 & 设置到分页响应对象
         pageable.setTotalElements(executeCount(executor, queryRequest, dialect));
 
@@ -127,8 +126,6 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
          *  会先从缓存内获取，缓存不存在时创建后写入缓存并返回
          */
         MappedStatement statement = MappedStatementHelper.initOrGetCountStatement(request.getStatement());
-        // 替换分页查询数据的mappedStatement
-        request.setStatement(statement);
 
         // 原始查询的boundSql
         BoundSql boundSql = request.getBoundSql();
@@ -139,16 +136,25 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
 
         // 创建查询总数量的boundSql对象实例
         BoundSql countBoundSql = new BoundSql(statement.getConfiguration(), countSql, boundSql.getParameterMappings(), parameter);
-        // 替换分页查询数据的BoundSql
-        request.setBoundSql(countBoundSql);
 
         // 创建缓存key
         CacheKey countKey = executor.createCacheKey(statement, parameter, RowBounds.DEFAULT, countBoundSql);
-        // 替换分页查询数据的缓存key
-        request.setCacheKey(countKey);
+
+        /*
+         * 为了不影响原始的ExecutorQueryRequest对象的值
+         * 所以重新构建分页查询数据列表的执行请求对象
+         */
+        ExecutorQueryRequest countQueryRequest = ExecutorQueryRequest.builder()
+                .boundSql(countBoundSql)
+                .statement(statement)
+                .rowBounds(request.getRowBounds())
+                .cacheKey(countKey)
+                .parameter(parameter)
+                .resultHandler(request.getResultHandler())
+                .build();
 
         // 执行查询count
-        Object countResultList = ExecutorHelper.query(executor, request);
+        Object countResultList = ExecutorHelper.query(executor, countQueryRequest);
         return ((Number) ((List) countResultList).get(0)).longValue();
     }
 
@@ -176,8 +182,6 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
          * 处理后的参数包含未处理之前的参数列表
          */
         Object pageParameter = dialect.getPageParameter(request.getParameter(), pageable);
-        // 替换请求参数，原parameter为未添加分页信息的数据列表
-        request.setParameter(pageParameter);
 
         // 实例化分页的绑定sql对象
         BoundSql pageBoundSql = new BoundSql(statement.getConfiguration(), dataSql, boundSql.getParameterMappings(), pageParameter);
@@ -187,18 +191,26 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
          * 处理后包含未处理之前的参数映射列表
          */
         dialect.addPageMapping(pageBoundSql, statement, pageable);
-
-        // 替换原boundSql对象
-        request.setBoundSql(pageBoundSql);
         /*
          * 创建缓存key
          * 并且将缓存key设置到本次执行对象内
          */
         CacheKey dataKey = executor.createCacheKey(statement, pageParameter, request.getRowBounds(), pageBoundSql);
-        request.setCacheKey(dataKey);
 
+        /*
+         * 为了不影响原始的ExecutorQueryRequest对象的值
+         * 所以重新构建分页查询数据列表的执行请求对象
+         */
+        ExecutorQueryRequest pageQueryRequest = ExecutorQueryRequest.builder()
+                .boundSql(pageBoundSql)
+                .statement(statement)
+                .rowBounds(request.getRowBounds())
+                .cacheKey(dataKey)
+                .parameter(pageParameter)
+                .resultHandler(request.getResultHandler())
+                .build();
         // 执行查询
-        return ExecutorHelper.query(executor, request);
+        return ExecutorHelper.query(executor, pageQueryRequest);
     }
 
     /**
