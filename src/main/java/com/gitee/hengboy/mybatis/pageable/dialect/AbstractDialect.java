@@ -37,6 +37,20 @@ public abstract class AbstractDialect implements Dialect {
      * 分隔符
      */
     protected static final String SPLIT = " , ";
+
+    /**
+     * 分页关键字：limit
+     */
+    private static final String PAGE_KEYWORD_LIMIT = " LIMIT ";
+    /**
+     * 分页关键字：offset
+     */
+    private static final String PAGE_KEYWORD_OFFSET = " OFFSET ";
+    /**
+     * 查询关键字：SELECT
+     */
+    protected static final String PAGE_KEYWORD_SELECT = "SELECT";
+
     /**
      * 分页参数：当前页码开始位置参数名称
      */
@@ -121,5 +135,24 @@ public abstract class AbstractDialect implements Dialect {
             MetaObject metaObject = SystemMetaObject.forObject(pageBoundSql);
             metaObject.setValue("parameterMappings", newParameterMappings);
         }
+    }
+
+    /**
+     * 默认提供的获取分页的sql
+     * 支持：MySQL、Postgres、HSQL数据库
+     * 其他数据库重写该方法即可
+     * @param boundSql boundSql 对象
+     * @param page     分页响应对象实例
+     * @return
+     */
+    @Override
+    public String getPageSql(BoundSql boundSql, Page page) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(boundSql.getSql());
+        sql.append(PAGE_KEYWORD_LIMIT);
+        sql.append(PRE_PLACEHOLDER);
+        sql.append(PAGE_KEYWORD_OFFSET);
+        sql.append(PRE_PLACEHOLDER);
+        return sql.toString();
     }
 }

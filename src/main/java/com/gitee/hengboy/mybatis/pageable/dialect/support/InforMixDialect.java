@@ -7,23 +7,32 @@ import org.apache.ibatis.mapping.BoundSql;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * SqlServer数据库方言
- * sqlServer 2000以上版本
- * 2005、2008、2012版本方式
+ * InforMix数据库方言
  *
  * @author：于起宇 <br/>
  * ===============================
  * Created with IDEA.
- * Date：2018/7/29
- * Time：4:25 PM
+ * Date：2018/8/1
+ * Time：11:13 AM
  * 简书：http://www.jianshu.com/u/092df3f77bca
  * ================================
  */
-public class SqlServerDialect extends AbstractDialect {
+public class InforMixDialect extends AbstractDialect {
     /**
-     * 获取sqlserver数据库分页查询的排序后的参数列表
+     * 分页关键字：skip
+     */
+    private static final String PAGE_KEYWORD_SKIP = " SKIP ";
+    /**
+     * 分页关键字：first
+     */
+    private static final String PAGE_KEYWORD_FIRST = " FIRST ";
+
+    /**
+     * 获取InforMix数据库分页排序后的参数
      *
      * @return
      */
@@ -38,21 +47,25 @@ public class SqlServerDialect extends AbstractDialect {
     }
 
     /**
-     * 获取SqlServer数据库分页sql
+     * 获取InforMix数据库分页sql
      *
-     * @param boundSql boundSql 对象
+     * @param boundSql boundSql对象实例
      * @param page     分页响应对象
      * @return
      */
     @Override
     public String getPageSql(BoundSql boundSql, Page page) {
-        StringBuilder sql = new StringBuilder();
-        sql.append(boundSql.getSql());
-        sql.append(" OFFSET ");
+        StringBuilder sql = new StringBuilder(PAGE_KEYWORD_SELECT);
+        sql.append(PAGE_KEYWORD_SKIP);
         sql.append(PRE_PLACEHOLDER);
-        sql.append(" ROWS FETCH NEXT ");
+        sql.append(PAGE_KEYWORD_FIRST);
         sql.append(PRE_PLACEHOLDER);
-        sql.append(" ROWS ONLY");
-        return sql.toString();
+
+        /*
+         * 忽略大小写进行替换
+         */
+        Pattern pattern = Pattern.compile(PAGE_KEYWORD_SELECT, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(boundSql.getSql());
+        return matcher.replaceFirst(sql.toString());
     }
 }

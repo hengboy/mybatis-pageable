@@ -1,9 +1,7 @@
 package com.gitee.hengboy.mybatis.pageable.dialect.support;
 
-import com.gitee.hengboy.mybatis.pageable.Page;
 import com.gitee.hengboy.mybatis.pageable.PageParameterSortMapping;
 import com.gitee.hengboy.mybatis.pageable.dialect.AbstractDialect;
-import org.apache.ibatis.mapping.BoundSql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +19,6 @@ import java.util.List;
  * </p>
  */
 public class MySqlDialect extends AbstractDialect {
-    /**
-     * 分页关键字
-     */
-    private static final String PAGE_KEYWORD = " LIMIT ";
 
     /**
      * 设置mysql数据库排序后的分页参数
@@ -37,26 +31,9 @@ public class MySqlDialect extends AbstractDialect {
     public List<PageParameterSortMapping> getSortParameterMapping() {
         return new ArrayList(){
             {
+                add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_SIZE).typeClass(Integer.class).build());
                 add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_OFFSET).typeClass(Long.class).build());
-                add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_SIZE).typeClass(Long.class).build());
             }
         };
-    }
-
-    /**
-     * 获取MySQL数据库的分页sql
-     *
-     * @param boundSql boundSql 对象
-     * @return 分页sql
-     */
-    @Override
-    public String getPageSql(BoundSql boundSql, Page page) {
-        StringBuffer sql = new StringBuffer();
-        sql.append(boundSql.getSql());
-        sql.append(PAGE_KEYWORD);
-        sql.append(PRE_PLACEHOLDER);
-        sql.append(SPLIT);
-        sql.append(PRE_PLACEHOLDER);
-        return sql.toString();
     }
 }

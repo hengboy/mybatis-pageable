@@ -1,9 +1,7 @@
 package com.gitee.hengboy.mybatis.pageable.dialect.support;
 
-import com.gitee.hengboy.mybatis.pageable.Page;
 import com.gitee.hengboy.mybatis.pageable.PageParameterSortMapping;
 import com.gitee.hengboy.mybatis.pageable.dialect.AbstractDialect;
-import org.apache.ibatis.mapping.BoundSql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +18,7 @@ import java.util.List;
  * ================================
  */
 public class HSqlDialect extends AbstractDialect {
+
     /**
      * 设置hsqldb数据库排序后的分页参数
      * 对应com.gitee.hengboy.mybatis.pageable.dialect.support.HSqlDialect#getPageSql(org.apache.ibatis.mapping.BoundSql, com.gitee.hengboy.mybatis.pageable.Page)
@@ -31,13 +30,9 @@ public class HSqlDialect extends AbstractDialect {
     public List<PageParameterSortMapping> getSortParameterMapping() {
         return new ArrayList() {
             {
-                add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_OFFSET).typeClass(Long.class).build());
                 add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_SIZE).typeClass(Integer.class).build());
+                add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_OFFSET).typeClass(Long.class).build());
             }
         };
-    }
-    @Override
-    public String getPageSql(BoundSql boundSql, Page page) {
-        return null;
     }
 }

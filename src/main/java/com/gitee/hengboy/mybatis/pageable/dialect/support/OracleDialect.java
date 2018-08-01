@@ -30,14 +30,14 @@ public class OracleDialect extends AbstractDialect {
      */
     @Override
     public List<PageParameterSortMapping> getSortParameterMapping() {
-        return new ArrayList(){
+        return new ArrayList() {
             {
                 add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_END).typeClass(Long.class).build());
                 add(PageParameterSortMapping.builder().parameterName(PARAM_PAGE_OFFSET).typeClass(Long.class).build());
             }
         };
     }
-    
+
     /**
      * 获取oracle数据库分页sql
      *

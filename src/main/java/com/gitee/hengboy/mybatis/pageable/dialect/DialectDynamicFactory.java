@@ -7,17 +7,20 @@ import org.apache.ibatis.mapping.MappedStatement;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
  * 方言动态工厂
+ * <p>
+ * ================================
  *
- * @author：于起宇 ===============================
- * Created with IDEA.
+ * @author：于起宇 Created with IDEA.
  * Date：2018/7/29
  * Time：3:28 PM
  * 简书：http://www.jianshu.com/u/092df3f77bca
  * ================================
+ * </p>
  */
 public class DialectDynamicFactory {
 
@@ -27,10 +30,6 @@ public class DialectDynamicFactory {
      * value=>DialectEnum数据库方言枚举
      */
     private static final Map<String, DialectEnum> URL_DIALECT_MAPPING = new HashMap();
-    /**
-     * 数据库连接字符串匹配数据库方言时的分隔符
-     */
-    private static final String JDBC_URL_SPLIT = "://";
 
     /**
      * 构造函数私有化
@@ -43,14 +42,31 @@ public class DialectDynamicFactory {
      * 静态代码块初始化链接字符串与数据库方言枚举关系
      */
     static {
+
+        // Use MySQL Dialect
         URL_DIALECT_MAPPING.put("jdbc:mysql", DialectEnum.MYSQL);
+        URL_DIALECT_MAPPING.put("jdbc:sqlite", DialectEnum.MYSQL);
+        URL_DIALECT_MAPPING.put("jdbc:mariadb", DialectEnum.MYSQL);
+
+        // Use Oracle Dialect
         URL_DIALECT_MAPPING.put("jdbc:oracle", DialectEnum.ORACLE);
+        URL_DIALECT_MAPPING.put("jdbc:dm", DialectEnum.ORACLE);
+
         URL_DIALECT_MAPPING.put("jdbc:db2", DialectEnum.DB2);
         URL_DIALECT_MAPPING.put("jdbc:postgresql", DialectEnum.POSTGRES);
-        URL_DIALECT_MAPPING.put("jdbc:microsoft:sqlserver", DialectEnum.SQLSERVER2000);
-        URL_DIALECT_MAPPING.put("jdbc:sqlserver", DialectEnum.SQLSERVER2005);
-        URL_DIALECT_MAPPING.put("jdbc:hsqldb:hsql", DialectEnum.HSQL);
 
+        // Use SqlServer Dialect
+        URL_DIALECT_MAPPING.put("jdbc:microsoft:sqlserver", DialectEnum.SQLSERVER2000);
+        URL_DIALECT_MAPPING.put("jdbc:sqlserver", DialectEnum.SQLSERVER);
+        URL_DIALECT_MAPPING.put("jdbc:derby", DialectEnum.SQLSERVER);
+
+        // Use HSQL Dialect
+        URL_DIALECT_MAPPING.put("jdbc:hsqldb:hsql", DialectEnum.HSQL);
+        URL_DIALECT_MAPPING.put("jdbc:h2", DialectEnum.HSQL);
+
+        // Use Informix Dialect
+        URL_DIALECT_MAPPING.put("jdbc:informix-sqli", DialectEnum.INfORMIX);
+        URL_DIALECT_MAPPING.put("jdbc:informix", DialectEnum.INfORMIX);
     }
 
     /**
@@ -82,19 +98,34 @@ public class DialectDynamicFactory {
      * @return 数据库方言实例
      */
     public static Dialect newAutoInstance(MappedStatement statement) {
-        System.out.println("进入自动获取方言");
         try {
             // 获取数据源
             DataSource dataSource = statement.getConfiguration().getEnvironment().getDataSource();
             // 获取数据源数据连接的字符串
             String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
-            // 获取jdbc连接字符串前缀
-            String jdbcUrlPrefix = jdbcUrl.split(JDBC_URL_SPLIT)[0];
             // 获取对应的数据库枚举
-            DialectEnum dialectEnum = URL_DIALECT_MAPPING.get(jdbcUrlPrefix);
+            DialectEnum dialectEnum = loopGetDialect(jdbcUrl);
             return dialectEnum.getValue().newInstance();
         } catch (Exception e) {
             throw new PageableException(ErrorMsgEnum.DIALECT_NOT_FOUND);
         }
+    }
+
+    /**
+     * 从连接字符串前缀集合内进行匹配
+     *
+     * @param jdbcUrl 数据库连接字符串
+     * @return
+     */
+    static DialectEnum loopGetDialect(String jdbcUrl) {
+        Iterator<String> iterator = URL_DIALECT_MAPPING.keySet().iterator();
+        while (iterator.hasNext()) {
+            // 配置的指定数据库前缀字符串
+            String urlPrefix = iterator.next();
+            if (jdbcUrl.indexOf(urlPrefix) != -1) {
+                return URL_DIALECT_MAPPING.get(urlPrefix);
+            }
+        }
+        return null;
     }
 }

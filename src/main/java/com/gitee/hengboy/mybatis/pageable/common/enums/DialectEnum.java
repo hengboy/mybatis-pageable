@@ -24,7 +24,8 @@ public enum DialectEnum {
     ORACLE(OracleDialect.class),
     POSTGRES(PostgresDialect.class),
     SQLSERVER2000(SqlServer2000Dialect.class),
-    SQLSERVER2005(SqlServerDialect.class);
+    SQLSERVER(SqlServerDialect.class),
+    INfORMIX(InforMixDialect.class);
 
     DialectEnum(Class<? extends Dialect> value) {
         this.value = value;
