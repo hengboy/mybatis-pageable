@@ -6,38 +6,104 @@
 
     <groupId>com.gitee.hengboy</groupId>
     <artifactId>mybatis-pageable</artifactId>
-    <version>1.0.0.SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>1.0.0.RELEASE</version>
+    <modules>
+        <module>mybatis-pageable-core</module>
+    </modules>
+    <name>mybatis分页插件工具</name>
+    <description>
+        该项目用于mybatis框架的分页操作，提供全面的分页支持
+        目前支持数据：
+        DB2、
+        Derby、
+        DM、
+        H2、
+        HSQL、
+        InforMix、
+        Mariadb、
+        MySQL、
+        Oracle、
+        Postgres、
+        SqlLite、
+        SqlServer2000以上版本
+        等主流数据库
+    </description>
+    <developers>
+        <developer>
+            <name>Yu Qi Yu</name>
+            <email>yuqiyu@vip.qq.com</email>
+            <organization>gitee</organization>
+            <organizationUrl>https://gitee.com/hengboy</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://gitee.com/hengboy/mybatis-pageable</connection>
+        <developerConnection>scm:git:https://gitee.com/hengboy/mybatis-pageable</developerConnection>
+        <url>https://gitee.com/hengboy/mybatis-pageable</url>
+        <tag>1.0.0.RELEASE</tag>
+    </scm>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>hengyu</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>hengyu</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
+            <!-- Source -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Gpg Signature -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-    <name>mybatis分页插件工具</name>
-    <description>该项目用户mybatis框架的分页操作，提供全面的分页支持</description>
-    <dependencies>
-        <!--MyBatis依赖-->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.4.4</version>
-        </dependency>
-        <!--lombok依赖-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.22</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
-        </dependency>
-    </dependencies>
 </project>
