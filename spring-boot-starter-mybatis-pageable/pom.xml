@@ -7,15 +7,16 @@
         <groupId>com.gitee.hengboy</groupId>
         <version>1.0.1.RELEASE</version>
     </parent>
-    <artifactId>mybatis-pageable-core</artifactId>
     <modelVersion>4.0.0</modelVersion>
+    <description>mybatis-pageable分页自动化springboot starter支持</description>
+    <artifactId>spring-boot-starter-mybatis-pageable</artifactId>
+
     <dependencies>
-        <!--MyBatis依赖-->
+        <!--mybatis-pageable autoconfigure-->
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
+            <groupId>com.gitee.hengboy</groupId>
+            <artifactId>spring-boot-autoconfigure-mybatis-pageable</artifactId>
+            <version>${autoconfigure.version}</version>
         </dependency>
     </dependencies>
-
 </project>

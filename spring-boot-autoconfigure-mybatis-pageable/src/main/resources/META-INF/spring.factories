@@ -1,0 +1,3 @@
+#配置mybatis-pageable自动化配置
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.gitee.hengboy.mybatis.pageable.autoconfigure.MyBatisPageableAutoConfigure

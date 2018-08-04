@@ -7,11 +7,26 @@
     <groupId>com.gitee.hengboy</groupId>
     <artifactId>mybatis-pageable</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0.RELEASE</version>
+    <version>1.0.1.RELEASE</version>
     <modules>
         <module>mybatis-pageable-core</module>
+        <module>spring-boot-starter-mybatis-pageable</module>
+        <module>spring-boot-autoconfigure-mybatis-pageable</module>
     </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
     <name>mybatis分页插件工具</name>
+
+    <properties>
+        <pageable.core.version>1.0.1.RELEASE</pageable.core.version>
+        <autoconfigure.version>1.0.1.RELEASE</autoconfigure.version>
+        <mybatis.version>3.4.4</mybatis.version>
+    </properties>
+
     <description>
         该项目用于mybatis框架的分页操作，提供全面的分页支持
         目前支持数据：
@@ -29,6 +44,12 @@
         SqlServer2000以上版本
         等主流数据库
     </description>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
     <developers>
         <developer>
             <name>Yu Qi Yu</name>
@@ -41,7 +62,7 @@
         <connection>scm:git:https://gitee.com/hengboy/mybatis-pageable</connection>
         <developerConnection>scm:git:https://gitee.com/hengboy/mybatis-pageable</developerConnection>
         <url>https://gitee.com/hengboy/mybatis-pageable</url>
-        <tag>1.0.0.RELEASE</tag>
+        <tag>1.0.1.RELEASE</tag>
     </scm>
     <licenses>
         <license>

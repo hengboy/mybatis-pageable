@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mybatis-pageable</artifactId>
+        <groupId>com.gitee.hengboy</groupId>
+        <version>1.0.1.RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spring-boot-autoconfigure-mybatis-pageable</artifactId>
+
+    <dependencies>
+        <!--SpringBoot AutoConfigure Dependency-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <!-- @ConfigurationProperties annotation processing (metadata for IDEs) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--mybatis-pageable-->
+        <dependency>
+            <groupId>com.gitee.hengboy</groupId>
+            <artifactId>mybatis-pageable-core</artifactId>
+            <version>${pageable.core.version}</version>
+        </dependency>
+    </dependencies>
+</project>
