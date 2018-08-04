@@ -16,7 +16,7 @@ import static com.gitee.hengboy.mybatis.pageable.autoconfigure.MyBatisPageablePr
 /**
  * mybatis-pageable自动配置类
  *
- * @author：于起宇 <br/>
+ * @author：于起宇
  * ===============================
  * Created with IDEA.
  * Date：2018/8/4

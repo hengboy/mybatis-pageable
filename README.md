@@ -2,7 +2,7 @@
 
 
 #### Maven Center 版本
-[![Maven central](https://maven-badges.herokuapp.com/maven-central/com.gitee.hengboy/mybatis-pageable-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.gitee.hengboy/mybatis-pageable-core)
+[![Maven central](https://maven-badges.herokuapp.com/maven-central/com.gitee.hengboy/spring-boot-starter-mybatis-pageable/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.gitee.hengboy/spring-boot-starter-mybatis-pageable)
 
 ### 欢迎关注公众号
 
