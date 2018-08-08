@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mybatis-pageable</artifactId>
         <groupId>com.gitee.hengboy</groupId>
-        <version>1.0.1.RELEASE</version>
+        <version>1.0.2.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -29,5 +29,24 @@
             <artifactId>mybatis-pageable-core</artifactId>
             <version>${pageable.core.version}</version>
         </dependency>
+
+        <!--如果使用mybatis-enhance-->
+        <!--自动化分页插件配置在mybatis-enhance自动化配置后执行-->
+        <dependency>
+            <groupId>com.gitee.hengboy</groupId>
+            <artifactId>mybatis-enhance-spring-boot-starter</artifactId>
+            <version>1.0.2.RELEASE</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!--如果使用mybatis-starter-->
+        <!--自动化分页插件配置在mybatis-starter自动化配置后执行-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.2</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 </project>

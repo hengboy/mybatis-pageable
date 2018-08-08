@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mybatis-pageable</artifactId>
         <groupId>com.gitee.hengboy</groupId>
-        <version>1.0.1.RELEASE</version>
+        <version>1.0.2.RELEASE</version>
     </parent>
     <artifactId>mybatis-pageable-core</artifactId>
     <modelVersion>4.0.0</modelVersion>

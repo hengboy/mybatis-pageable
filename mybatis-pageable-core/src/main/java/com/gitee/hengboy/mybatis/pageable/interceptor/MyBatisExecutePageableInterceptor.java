@@ -101,7 +101,6 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
         ResultHandler resultHandler = (ResultHandler) args[3];
         // boundSql
         BoundSql boundSql = statement.getBoundSql(parameter);
-
         return ExecutorQueryRequest.builder()
                 .statement(statement)
                 .parameter(parameter)

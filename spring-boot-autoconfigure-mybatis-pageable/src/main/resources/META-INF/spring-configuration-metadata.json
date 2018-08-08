@@ -10,17 +10,10 @@
   "properties": [
     {
       "sourceType": "com.gitee.hengboy.mybatis.pageable.autoconfigure.MyBatisPageableProperties",
-      "defaultValue": "com.gitee.hengboy.mybatis.pageable.dialect.support.MySqlDialect",
+      "defaultValue": "MYSQL",
       "name": "hengboy.pageable.dialect",
-      "description": "数据库方言,请查看DialectEnum枚举",
-      "type": "java.lang.String"
-    },
-    {
-      "sourceType": "com.gitee.hengboy.mybatis.pageable.autoconfigure.MyBatisPageableProperties",
-      "defaultValue": "false",
-      "name": "hengboy.pageable.enable",
-      "description": "是否启用自动化分页,true：启用,false：不启用.",
-      "type": "java.lang.Boolean"
+      "description": "数据库方言,默认MYSQL",
+      "type": "com.gitee.hengboy.mybatis.pageable.common.enums.DialectEnum"
     }
   ]
 }
