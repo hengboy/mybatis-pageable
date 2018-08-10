@@ -8,7 +8,7 @@ import java.util.List;
  * 自动分页配置抽象类
  * 由于支持jdk1.8以下的版本，所以这里不能采用default新特性
  *
- * @author：于起宇 <br/>
+ * @author：于起宇
  * ===============================
  * Created with IDEA.
  * Date：2018/8/8

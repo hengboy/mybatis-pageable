@@ -7,7 +7,7 @@
     <groupId>com.gitee.hengboy</groupId>
     <artifactId>mybatis-pageable</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2.RELEASE</version>
+    <version>1.0.3.RELEASE</version>
     <modules>
         <module>mybatis-pageable-core</module>
         <module>spring-boot-starter-mybatis-pageable</module>
@@ -22,9 +22,11 @@
     <name>mybatis分页插件工具</name>
 
     <properties>
-        <pageable.core.version>1.0.2.RELEASE</pageable.core.version>
-        <autoconfigure.version>1.0.2.RELEASE</autoconfigure.version>
+        <pageable.core.version>1.0.3.RELEASE</pageable.core.version>
+        <autoconfigure.version>1.0.3.RELEASE</autoconfigure.version>
         <mybatis.version>3.4.4</mybatis.version>
+        <mybatis.enhance.starter.version>1.0.4.RELEASE</mybatis.enhance.starter.version>
+        <mybatis.starter.version>1.3.2</mybatis.starter.version>
     </properties>
 
     <description>
@@ -62,7 +64,7 @@
         <connection>scm:git:https://gitee.com/hengboy/mybatis-pageable</connection>
         <developerConnection>scm:git:https://gitee.com/hengboy/mybatis-pageable</developerConnection>
         <url>https://gitee.com/hengboy/mybatis-pageable</url>
-        <tag>1.0.2.RELEASE</tag>
+        <tag>1.0.3.RELEASE</tag>
     </scm>
     <licenses>
         <license>

@@ -3,7 +3,6 @@ package com.gitee.hengboy.mybatis.pageable.autoconfigure;
 import com.gitee.hengboy.enhance.spring.boot.autoconfigure.MyBatisEnhanceAutoConfiguration;
 import com.gitee.hengboy.mybatis.pageable.config.PageableConfigurer;
 import com.gitee.hengboy.mybatis.pageable.interceptor.MyBatisExecutePageableInterceptor;
-import com.sanmi.framework.autoconfig.orm.OrmAutoConfiguration;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
@@ -31,7 +30,7 @@ import java.util.List;
 @Configuration
 @ConditionalOnBean(SqlSessionFactory.class)
 @EnableConfigurationProperties(MyBatisPageableProperties.class)
-@AutoConfigureAfter({MyBatisEnhanceAutoConfiguration.class, MybatisAutoConfiguration.class, OrmAutoConfiguration.class})
+@AutoConfigureAfter({MyBatisEnhanceAutoConfiguration.class, MybatisAutoConfiguration.class})
 public class MyBatisPageableAutoConfigure {
     /**
      * 自动化分页配置类
@@ -104,7 +103,6 @@ public class MyBatisPageableAutoConfigure {
      */
     void loopAddInterceptor(List<Interceptor> interceptors, SqlSessionFactory sqlSessionFactory) {
         for (Interceptor interceptor : interceptors) {
-            System.out.println("添加插件：" + interceptor.getClass().getName());
             sqlSessionFactory.getConfiguration().addInterceptor(interceptor);
         }
     }
