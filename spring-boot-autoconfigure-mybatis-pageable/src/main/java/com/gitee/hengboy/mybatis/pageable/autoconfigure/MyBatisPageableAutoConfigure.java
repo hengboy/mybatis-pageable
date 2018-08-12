@@ -1,14 +1,14 @@
 package com.gitee.hengboy.mybatis.pageable.autoconfigure;
 
-import com.gitee.hengboy.enhance.spring.boot.autoconfigure.MyBatisEnhanceAutoConfiguration;
 import com.gitee.hengboy.mybatis.pageable.config.PageableConfigurer;
 import com.gitee.hengboy.mybatis.pageable.interceptor.MyBatisExecutePageableInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,7 +30,8 @@ import java.util.List;
 @Configuration
 @ConditionalOnBean(SqlSessionFactory.class)
 @EnableConfigurationProperties(MyBatisPageableProperties.class)
-@AutoConfigureAfter({MyBatisEnhanceAutoConfiguration.class, MybatisAutoConfiguration.class})
+@ConditionalOnClass(DataSourceAutoConfiguration.class)
+@AutoConfigureAfter(DataSourceAutoConfiguration.class)
 public class MyBatisPageableAutoConfigure {
     /**
      * 自动化分页配置类
