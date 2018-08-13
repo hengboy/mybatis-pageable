@@ -1,4 +1,4 @@
-## 欢迎使用代码生成器Code-Builder
+## 欢迎使用自动化分页插件
 
 [![Maven central](https://maven-badges.herokuapp.com/maven-central/com.gitee.hengboy/spring-boot-starter-mybatis-pageable/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.gitee.hengboy/spring-boot-starter-mybatis-pageable)
 
