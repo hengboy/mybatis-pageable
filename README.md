@@ -11,18 +11,18 @@
 
 ### 支持的数据库
 `MyBatis-Pageable`目前支持的主流数据库：
-	1. DB2
-    2. Derby
-    3. DM、
-    4. H2、
-    5. HSQL、
-    6. InforMix、
-    7. Mariadb、
-    8. MySQL、
-    9. Oracle、
-    10. Postgres、
-    11. SqlLite、
-    12. SqlServer2000以上版本
+- DB2
+- Derby
+- DM、
+- H2、
+- HSQL、
+- InforMix、
+- Mariadb、
+- MySQL、
+- Oracle、
+- Postgres、
+- SqlLite、
+- SqlServer2000以上版本
 
 ### 快速开始
 `MyBatis-Pageable`可以在传统的`Spring`项目内使用，也可以在最新`SpringBoot`项目内使用。
