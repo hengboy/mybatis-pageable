@@ -2,13 +2,15 @@ package com.gitee.hengboy.mybatis.pageable.request;
 
 import com.gitee.hengboy.mybatis.pageable.LogicFunction;
 import com.gitee.hengboy.mybatis.pageable.Page;
+import com.gitee.hengboy.mybatis.pageable.common.AnnotationHelper;
 import com.gitee.hengboy.mybatis.pageable.common.PageableRequestHelper;
+import com.gitee.hengboy.mybatis.pageable.common.annotations.PageIndex;
+import com.gitee.hengboy.mybatis.pageable.common.annotations.PageSize;
 
 /**
  * 分页请求对象
  *
- * @author：于起宇
- * ===============================
+ * @author：于起宇 ===============================
  * Created with IDEA.
  * Date：2018/7/28
  * Time：7:03 PM
@@ -16,6 +18,14 @@ import com.gitee.hengboy.mybatis.pageable.common.PageableRequestHelper;
  * ================================
  */
 public class PageableRequest extends AbstractPageRequest {
+    /**
+     * 默认页码
+     */
+    private static Integer DEFAULT_PAGE_INDEX = 1;
+    /**
+     * 默认每页条数
+     */
+    private static Integer DEFAULT_PAGE_SIZE = 10;
     /**
      * 构造函数初始化分页请求对象
      *
@@ -38,10 +48,26 @@ public class PageableRequest extends AbstractPageRequest {
     }
 
     /**
+     * 对外提供的初始化分页请求方法
+     * 通过传递包含分页参数注解的对象实例
+     *
+     * @param pageParam 包含分页注解的参数实体
+     * @return
+     */
+    public static Pageable of(Object pageParam) {
+        // 页码
+        Integer pageIndex = AnnotationHelper.getIntValue(pageParam, PageIndex.class);
+        // 每页条数
+        Integer pageSize = AnnotationHelper.getIntValue(pageParam, PageSize.class);
+        // 返回分页对象
+        return new PageableRequest(null == pageIndex ? DEFAULT_PAGE_INDEX : pageIndex, null == pageSize ? DEFAULT_PAGE_SIZE : pageSize);
+    }
+
+    /**
      * 执行请求分页方法
      *
      * @param logicFunction 业务逻辑查询方法
-     * @param <T> 泛型参数
+     * @param <T>           泛型参数
      * @return 执行分页请求
      */
     public <T> Page<T> request(LogicFunction logicFunction) {
