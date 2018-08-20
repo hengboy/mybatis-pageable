@@ -89,7 +89,7 @@ Page<UserEntity> page = PageableRequest.of(1, 5).request(() -> userMapper.select
 ```
 
 - `of`  配置分页的`当前页码`以及`每页的限制条数`
-- `request` 该方法需要传递一个夜晚逻辑方法，也就是你需要执行分页的方法
+- `request` 该方法需要传递一个业务逻辑方法，也就是你需要执行分页的方法
 
 #### Page对象详解
 在上面简单的一行代码就可以完成自动分页以及读取出分页相关的信息，分页执行后我们通过`Page`对象都可以获取到什么内容呢？
