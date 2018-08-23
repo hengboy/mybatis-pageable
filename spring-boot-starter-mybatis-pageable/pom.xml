@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mybatis-pageable</artifactId>
         <groupId>com.gitee.hengboy</groupId>
-        <version>1.0.5.RELEASE</version>
+        <version>1.0.6.RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <description>mybatis-pageable分页自动化springboot starter支持</description>

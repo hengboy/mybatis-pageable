@@ -6,6 +6,7 @@ import com.gitee.hengboy.mybatis.pageable.common.exception.PageableException;
 import org.apache.ibatis.mapping.MappedStatement;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -101,8 +102,12 @@ public class DialectDynamicFactory {
         try {
             // 获取数据源
             DataSource dataSource = statement.getConfiguration().getEnvironment().getDataSource();
+            // 获取数据源
+            Connection connection = dataSource.getConnection();
             // 获取数据源数据连接的字符串
-            String jdbcUrl = dataSource.getConnection().getMetaData().getURL();
+            String jdbcUrl = connection.getMetaData().getURL();
+            // 关闭数据源
+            connection.close();
             // 获取对应的数据库枚举
             DialectEnum dialectEnum = loopGetDialect(jdbcUrl);
             return dialectEnum.getValue().newInstance();

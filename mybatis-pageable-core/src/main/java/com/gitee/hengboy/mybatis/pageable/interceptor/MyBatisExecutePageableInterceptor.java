@@ -40,7 +40,10 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
      * 项目配置数据库方言的类名全限定名
      */
     private String dialect;
-
+    /**
+     * 缓存数据库方言对象到内存
+     */
+    private Dialect dialectCache;
     /**
      * 拦截器方法
      *
@@ -66,18 +69,22 @@ public class MyBatisExecutePageableInterceptor implements Interceptor {
         DefaultPage pageable = (DefaultPage) PageableRequestHelper.getPageLocal();
 
         /*
+         * 缓存对象优先
+         * 如果每次生成存在性能瓶颈
          * 数据库方言
          * 根据不同的数据库方言生成分页sql、查询总数量sql、参数映射、参数重装等操作
          */
-        Dialect dialect = DialectDynamicFactory.newInstance(statement, this.dialect);
+        if (dialectCache==null) {
+            dialectCache = DialectDynamicFactory.newInstance(statement, this.dialect);
+        }
 
         // 构建请求对象
         ExecutorQueryRequest queryRequest = buildExecutorQueryRequest(args);
 
         // 执行分页查询 & 设置到分页响应对象
-        pageable.setData(executeQuery(executor, queryRequest, pageable, dialect));
+        pageable.setData(executeQuery(executor, queryRequest, pageable, dialectCache));
         // 查询总数量 & 设置到分页响应对象
-        pageable.setTotalElements(executeCount(executor, queryRequest, dialect));
+        pageable.setTotalElements(executeCount(executor, queryRequest, dialectCache));
 
         // 分页查询后的列表数据
         return pageable.getData();
